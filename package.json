@@ -1,0 +1,17 @@
+{
+  "name": "data-table-parser",
+  "version": "0.1",
+  "description": "A data table parser",
+  "main": "decoder.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sahar Brodbeker",
+  "license": "ISC",
+  "dependencies": {
+    "csvtojson": "^1.0.3",
+    "fs-extra": "^1.0.0",
+    "xls-to-json": "^0.4.0",
+    "yargs": "^6.4.0"
+  }
+}
