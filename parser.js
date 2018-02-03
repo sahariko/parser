@@ -1,48 +1,45 @@
-//Requires
-let fs = require('fs-extra')
-let path = require('path')
-let Converter = require("csvtojson").Converter
-let csvConverter = new Converter({})
-let node_xj = require("xls-to-json")
-let argv = require('yargs').argv
+const fs = require('fs-extra')
+const path = require('path')
+const Converter = require('csvtojson').Converter
+const csvConverter = new Converter({})
+const node_xj = require('xls-to-json')
+const argv = require('yargs').argv
 
-//Configuration
-let config = {
+const config = {
 	extensions: ['csv', 'xls', 'xlsx'],
 	filesPath: path.join(path.resolve(__dirname), 'files'),
 	column: argv.col,
 	decode: argv.decode
 }
 
-//Parser functions
-let parser = new function () {
-	let _write = function (path, result) {
+const parser = new function() {
+	const _write = (path, result) => {
 		try {
-			let name = path.substr(0, path.indexOf('.'))
-			let writePath = config.filesPath + '/' + name + '.txt'
+			const name = path.substr(0, path.indexOf('.'))
+			const writePath = `${config.filesPath}/${name}.txt`
 
-			for (var i = 0; i < result.length; i++) {
-				let line = result[i]
-				let string = config.decode ? new Buffer(line[Object.keys(line)[config.column]], 'base64') : line[Object.keys(line)[config.column]]
-				fs.appendFileSync(writePath, string + '\n')
+			for (let i = 0; i < result.length; i++) {
+				const line = result[i]
+				const string = config.decode ? new Buffer(line[Object.keys(line)[config.column]], 'base64') : line[Object.keys(line)[config.column]]
+				fs.appendFileSync(writePath, `${string}\n`)
 			}
 		} catch (e) {throw new Error('There was an error: ', e)}
 	}
-	
+
 	return {
-		csv: function (file) {
-			let filePath = path.join(config.filesPath, file)
-			csvConverter.fromFile(filePath, function (err, result) {
+		csv: (file) => {
+			const filePath = path.join(config.filesPath, file)
+			csvConverter.fromFile(filePath, (err, result) => {
 				_write(file, result)
 			})
 		},
-		
-		xls: function (file) {
-			let filePath = path.join(config.filesPath, file)
+
+		xls: (file) => {
+			const filePath = path.join(config.filesPath, file)
 			node_xj({
 				input: filePath,
 				output: null
-			}, function (err, result) {
+			}, (err, result) => {
 				if (err) {
 					throw new Error(err)
 				} else {
@@ -53,11 +50,10 @@ let parser = new function () {
 	}
 }
 
-//Getting the file list and sifting through it
-let files = fs.readdirSync(config.filesPath)
+const files = fs.readdirSync(config.filesPath)
 
 for (let i = 0; i < files.length; i++) {
-	let extension = files[i].substr(files[i].lastIndexOf(".") + 1)
+	const extension = files[i].substr(files[i].lastIndexOf('.') + 1)
 	if (extension == 'txt') {
 		fs.removeSync(path.join(config.filesPath, files[i]))
 	}
@@ -66,7 +62,7 @@ for (let i = 0; i < files.length; i++) {
 			case 'csv':
 				parser.csv(files[i])
 				break
-				
+
 			default:
 				parser.xls(files[i])
 				break
