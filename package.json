@@ -1,5 +1,5 @@
 {
-  "name": "table-filter",
+  "name": "@cocopina/table-filter",
   "version": "0.0.1",
   "description": "A data table column filter",
   "main": "index.js",

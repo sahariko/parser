@@ -1,21 +1,42 @@
-# Data Table Decoder
+# Data Table Filter
 
-This is a data parser for table-oriented files (csv, xls, xlsx).
-Used for getting the data from a single column in the data-table, and outputting it to a `.txt` file.
+Filter data from a table-oriented file (csv, xls, xlsx) by a specified column.
 
-## Installation
+## Module Version
+
+### Installation
+```shell
+$ npm install @cocopina/table-parser
+```
+
+### Usage
+```js
+const filter = require('@cocopina/table-filter')
+filter('path/to/file.csv', 1)
+	.then((result) => {
+		// Do something
+	})
+```
+
+## CLI Version
+
+### Installation
 
 ```shell
-$ npm install
+$ npm install -g @cocopina/table-parser
 ```
 
 ### Usage
 
-1. Put any file with the extension 'csv', 'xls' or 'xlsx' into the 'files' directory.
-2. Open the terminal (for Mac users) or command line (for Windows users), and run `node parser`
+```shell
+$ table-filter <source>
+```
 
-#### CLI
+#### Options
+`--help`  Show help
 
-`--col #column number#` *Mandatory*, choosing column number
+`--version`     Show version number
 
-`--decode` *Optional*, for decoding from base64
+`--column, -c`  The column to filter by.
+
+`--output, -o`  An output file. Default output is console.
